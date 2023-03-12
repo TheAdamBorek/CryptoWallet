@@ -1,14 +1,23 @@
 import React from "react";
 import { View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Text } from "react-native-paper";
 
 export const LoadingBoundary: React.FC<{
   loading: boolean;
-  children?: React.ReactElement;
-}> = ({ loading, children }) => {
+  children: React.ReactElement;
+  message?: string;
+}> = ({ loading, message, children }) => {
   return loading ? (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 16,
+      }}
+    >
       <ActivityIndicator animating={loading} />
+      <Text>{message}</Text>
     </View>
   ) : (
     children

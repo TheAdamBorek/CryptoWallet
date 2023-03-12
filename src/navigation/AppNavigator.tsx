@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RecoverFromSeedsContainer } from "../features/RecoverFromSeeds/RecoverFromSeedsContainer";
+import { RecoverScreen } from "../features/RecoverFromSeeds";
 
 declare global {
   namespace ReactNavigation {
@@ -21,7 +21,7 @@ export const AppNavigator = () => {
         options={{
           headerTitle: "Recover",
         }}
-        component={RecoverFromSeedsContainer}
+        component={RecoverScreen}
       ></Stack.Screen>
     </Stack.Navigator>
   );
