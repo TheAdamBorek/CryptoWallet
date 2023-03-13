@@ -1,6 +1,10 @@
 import { ethers } from "ethers";
+import config from "./config.json";
 export type Wallet = ethers.Wallet;
-const provider = new ethers.providers.EtherscanProvider("sepolia");
+export const sepoliaProvider = new ethers.providers.EtherscanProvider(
+  "sepolia",
+  config.etherscan.apikey
+);
 /**
  * May **throws**
  * @param words - 12 mnemonic words
@@ -16,7 +20,7 @@ export const tryToRecoverWalletFromMnemonic = async (
   const preparedWords = words.map((word) => word.trim().toLowerCase());
   try {
     const wallet = ethers.Wallet.fromMnemonic(preparedWords.join(" "));
-    return wallet.connect(provider);
+    return wallet.connect(sepoliaProvider);
   } catch (error) {
     throw error;
   }

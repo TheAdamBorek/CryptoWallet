@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 export type ETHAddressContextValue = {
-  address?: string;
+  address?: string | null;
   setAddress: (key: string) => Promise<void>;
 };
 

@@ -23,6 +23,7 @@ export const EncryptWallet: React.FC<{
     setIsEncrypting(true);
     try {
       await persistPrivateKey(wallet.privateKey, password);
+      console.log("wallet address", wallet.address);
       await setAddress(wallet.address);
     } catch (error) {
       console.error(error);

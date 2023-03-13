@@ -4,13 +4,12 @@ import {
   Provider as PublicKeyContextProvider,
 } from "./ETHAddressContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 const AsyncStorageKey = "ethAddress";
 
 export const ETHAddressProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [address, setAddress] = useState<string>();
+  const [address, setAddress] = useState<string | null>();
 
   const contextValue = useMemo<ETHAddressContextValue>(
     () => ({
@@ -25,8 +24,10 @@ export const ETHAddressProvider: React.FC<PropsWithChildren> = ({
 
   useEffect(() => {
     async function loadAddress() {
-      const key = await AsyncStorage.getItem(AsyncStorageKey).catch(() => null);
-      setAddress(key ?? undefined);
+      const address = await AsyncStorage.getItem(AsyncStorageKey).catch(
+        () => null
+      );
+      setAddress(address);
     }
     loadAddress();
   }, [setAddress]);

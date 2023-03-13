@@ -33,7 +33,6 @@ export const RecoverFromSeeds: React.FC<{
     setIsDecrypting(true);
     try {
       const wallet = await tryToRecoverWalletFromMnemonic(seeds);
-      Toast.show("Successfully recovered a wallet!");
       setWallet(wallet);
     } catch (e) {
       if (e instanceof Error) {

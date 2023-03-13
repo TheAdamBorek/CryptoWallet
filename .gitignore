@@ -407,4 +407,4 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/webstorm,reactnative,visualstudiocode
 
 # Custom
-./src/crypto/config.json
+/src/crypto/config.json
