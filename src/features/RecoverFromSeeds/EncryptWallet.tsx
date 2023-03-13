@@ -4,10 +4,9 @@ import { View } from "react-native";
 import { Screen } from "../../components/Screen";
 import { Button, TextInput, Text, HelperText } from "react-native-paper";
 import { isEmptyText } from "../../utils/text";
-import { decrypt, encrypt } from "../../crypto/crypto";
-import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-root-toast";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useETHAddressContext } from "../../persistence/ETHAddressContext";
+import { persistPrivateKey } from "../../persistence/privateKey";
 
 export const EncryptWallet: React.FC<{
   wallet?: Wallet;
@@ -16,14 +15,15 @@ export const EncryptWallet: React.FC<{
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>();
   const [isEncrypting, setIsEncrypting] = useState(false);
 
+  const { setAddress } = useETHAddressContext();
+
   const encryptWallet = async () => {
     if (wallet == undefined) return;
     if (password == undefined) return;
     setIsEncrypting(true);
-    const encryptedWallet = encrypt(wallet.privateKey, password);
     try {
-      await SecureStore.setItemAsync("wallet", encryptedWallet);
-      await AsyncStorage.setItem("publicKey", wallet.publicKey);
+      await persistPrivateKey(wallet.privateKey, password);
+      await setAddress(wallet.address);
     } catch (error) {
       console.error(error);
     }
