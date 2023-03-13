@@ -5,6 +5,9 @@ import { Screen } from "../../components/Screen";
 import { Button, TextInput, Text, HelperText } from "react-native-paper";
 import { isEmptyText } from "../../utils/text";
 import { decrypt, encrypt } from "../../crypto/crypto";
+import * as SecureStore from "expo-secure-store";
+import Toast from "react-native-root-toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const EncryptWallet: React.FC<{
   wallet?: Wallet;
@@ -17,12 +20,15 @@ export const EncryptWallet: React.FC<{
     if (wallet == undefined) return;
     if (password == undefined) return;
     setIsEncrypting(true);
-    const encryptedWallet = encrypt(wallet.privateKey, "qwerty");
-    const decryptedWallet = decrypt(encryptedWallet, "qwerty");
+    const encryptedWallet = encrypt(wallet.privateKey, password);
+    try {
+      await SecureStore.setItemAsync("wallet", encryptedWallet);
+      await AsyncStorage.setItem("publicKey", wallet.publicKey);
+    } catch (error) {
+      console.error(error);
+    }
     setIsEncrypting(false);
-    console.log("pkey", wallet.privateKey);
-    console.log("encrypted", encryptedWallet);
-    console.log("decrypted", decryptedWallet);
+    Toast.show("Did recover a wallet!");
   };
 
   const isButtonEnabled =
@@ -45,6 +51,8 @@ export const EncryptWallet: React.FC<{
             transaction.
           </Text>
           <TextInput
+            autoCapitalize={"none"}
+            autoCorrect={false}
             value={password}
             label={"Password"}
             secureTextEntry={true}
@@ -52,6 +60,8 @@ export const EncryptWallet: React.FC<{
           />
           <View>
             <TextInput
+              autoCapitalize={"none"}
+              autoCorrect={false}
               error={showingPasswordNotMatchingError}
               value={passwordConfirmation}
               label={"Confirm Password"}
