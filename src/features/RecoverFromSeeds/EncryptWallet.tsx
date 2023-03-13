@@ -15,10 +15,12 @@ export const EncryptWallet: React.FC<{
   const encryptWallet = async () => {
     if (wallet == undefined) return;
     if (password == undefined) return;
-
+    const t0 = performance.now();
     setIsEncrypting(true);
     const encryptedWallet = await wallet.encrypt(password, {});
     setIsEncrypting(false);
+    const t1 = performance.now();
+    console.log(`did encrypt wallet in ${(t1 - t0) / 1000} seconds`);
   };
 
   const isButtonEnabled =
