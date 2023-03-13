@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Screen } from "../../components/Screen";
 import { Button, TextInput, Text, HelperText } from "react-native-paper";
 import { isEmptyText } from "../../utils/text";
+import { decrypt, encrypt } from "../../crypto/crypto";
 
 export const EncryptWallet: React.FC<{
   wallet?: Wallet;
@@ -15,12 +16,13 @@ export const EncryptWallet: React.FC<{
   const encryptWallet = async () => {
     if (wallet == undefined) return;
     if (password == undefined) return;
-    const t0 = performance.now();
     setIsEncrypting(true);
-    const encryptedWallet = await wallet.encrypt(password, {});
+    const encryptedWallet = encrypt(wallet.privateKey, "qwerty");
+    const decryptedWallet = decrypt(encryptedWallet, "qwerty");
     setIsEncrypting(false);
-    const t1 = performance.now();
-    console.log(`did encrypt wallet in ${(t1 - t0) / 1000} seconds`);
+    console.log("pkey", wallet.privateKey);
+    console.log("encrypted", encryptedWallet);
+    console.log("decrypted", decryptedWallet);
   };
 
   const isButtonEnabled =
