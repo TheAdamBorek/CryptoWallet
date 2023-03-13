@@ -9,8 +9,11 @@ export const RecoverScreen: React.FC<{}> = () => {
   const [wallet, setWallet] = useState<ethers.Wallet | undefined>();
   const pagerRef = useRef<PagerView>(null);
   useEffect(() => {
+    const randomWallet = ethers.Wallet.createRandom();
+    setWallet(randomWallet);
     pagerRef.current?.setPage(1);
   }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <PagerView
